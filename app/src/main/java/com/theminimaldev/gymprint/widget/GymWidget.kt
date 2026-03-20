@@ -24,13 +24,10 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.width
-import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import com.theminimaldev.gymprint.data.db.AppDatabase
-import com.theminimaldev.gymprint.ui.theme.DarkColorScheme
-import com.theminimaldev.gymprint.ui.theme.LightColorScheme
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -45,7 +42,7 @@ class GymWidgetSmall : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val data = loadWidgetData(context)
         provideContent {
-            GlanceTheme(colors = ColorProviders(light = LightColorScheme, dark = DarkColorScheme)) {
+            GlanceTheme {
                 SmallWidgetContent(streak = data.streak, lastVisitDate = data.lastVisitDate)
             }
         }
@@ -64,7 +61,7 @@ class GymWidgetMedium : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val data = loadWidgetData(context)
         provideContent {
-            GlanceTheme(colors = ColorProviders(light = LightColorScheme, dark = DarkColorScheme)) {
+            GlanceTheme {
                 MediumWidgetContent(streak = data.streak, visitDates = data.visitDates, context = context)
             }
         }
