@@ -5,9 +5,9 @@ Automatic gym visit tracker for Android. Set your gym's location once — Gympri
 ## Screenshots
 
 <p float="left">
-  <img src="screenshots/visit_chart.png" width="200" />
   <img src="screenshots/add_gym_search.png" width="200" />
   <img src="screenshots/add_gym_manual.png" width="200" />
+  <img src="screenshots/visit_chart.png" width="200" />
   <img src="screenshots/widgets.png" width="200" />
 </p>
 
