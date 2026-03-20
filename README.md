@@ -69,7 +69,7 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-The workflow signs the APK using secrets stored in the repository (`KEYSTORE_BASE64`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`) and publishes it to GitHub Releases.
+The workflow signs the APK using secrets stored in the repository (`SIGNING_KEY`, `KEY_STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`) and publishes it to GitHub Releases.
 
 ## Tech Stack
 

@@ -29,13 +29,13 @@ jobs:
 
       - name: Decode keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/release.keystore
+          echo "${{ secrets.SIGNING_KEY }}" | base64 --decode > ${{ github.workspace }}/release.keystore
 
       - name: Build release APK
         # No MAPS_API_KEY — release build uses manual coordinate entry only
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: ./gradlew assembleRelease --stacktrace
