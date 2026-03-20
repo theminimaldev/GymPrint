@@ -2,6 +2,9 @@ package com.theminimaldev.gymprint.widget
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
@@ -14,7 +17,6 @@ import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.provideContent
-import com.theminimaldev.gymprint.MainActivity
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
@@ -26,15 +28,34 @@ import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.width
+import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import com.theminimaldev.gymprint.MainActivity
 import com.theminimaldev.gymprint.data.db.AppDatabase
+import com.theminimaldev.gymprint.ui.theme.DarkColorScheme
+import com.theminimaldev.gymprint.ui.theme.LightColorScheme
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+private fun widgetColors(context: Context) =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        ColorProviders(
+            light = dynamicLightColorScheme(context),
+            dark = dynamicDarkColorScheme(context)
+        )
+    } else {
+        ColorProviders(light = LightColorScheme, dark = DarkColorScheme)
+    }
+
+private fun launchIntent(context: Context) =
+    Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+    }
 
 // ────────────────────────────────────────────────────────────────
 // Small 2×2 Widget
@@ -43,8 +64,9 @@ import androidx.compose.ui.unit.sp
 class GymWidgetSmall : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val data = loadWidgetData(context)
+        val colors = widgetColors(context)
         provideContent {
-            GlanceTheme {
+            GlanceTheme(colors = colors) {
                 SmallWidgetContent(streak = data.streak, lastVisitDate = data.lastVisitDate)
             }
         }
@@ -62,8 +84,9 @@ class GymWidgetSmallReceiver : GlanceAppWidgetReceiver() {
 class GymWidgetMedium : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val data = loadWidgetData(context)
+        val colors = widgetColors(context)
         provideContent {
-            GlanceTheme {
+            GlanceTheme(colors = colors) {
                 MediumWidgetContent(streak = data.streak, visitDates = data.visitDates, context = context)
             }
         }
@@ -121,7 +144,7 @@ private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
     val context = LocalContext.current
     Box(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(16.dp)
-            .clickable(actionStartActivity(Intent(context, MainActivity::class.java))),
+            .clickable(actionStartActivity(launchIntent(context))),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -151,7 +174,7 @@ private fun MediumWidgetContent(streak: Int, visitDates: Set<String>, context: C
     val bitmap = WidgetBitmapRenderer.render(context = context, visitDates = visitDates, weeks = 12)
     Row(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(12.dp)
-            .clickable(actionStartActivity(Intent(glanceContext, MainActivity::class.java))),
+            .clickable(actionStartActivity(launchIntent(glanceContext))),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(

@@ -30,13 +30,79 @@
 
     </LinearLayout>
 
-    <!-- Placeholder for contribution graph -->
-    <View
+    <!-- Contribution graph placeholder: grid of small squares -->
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginStart="8dp"
-        android:background="#33FFFFFF"
-        android:alpha="0.4" />
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#CCFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#FFFFFFFF" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#CCFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#FFFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#CCFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#FFFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#CCFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#FFFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#CCFFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#55FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#88FFFFFF" />
+            <View android:layout_width="10dp" android:layout_height="10dp" android:layout_margin="1dp" android:background="#FFFFFFFF" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
