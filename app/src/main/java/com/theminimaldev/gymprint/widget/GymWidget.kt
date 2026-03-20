@@ -7,9 +7,12 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.provideContent
+import com.theminimaldev.gymprint.MainActivity
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Box
@@ -25,7 +28,6 @@ import androidx.glance.material3.ColorProviders
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
-import androidx.glance.unit.ColorProvider
 import com.theminimaldev.gymprint.data.db.AppDatabase
 import com.theminimaldev.gymprint.ui.theme.DarkColorScheme
 import com.theminimaldev.gymprint.ui.theme.LightColorScheme
@@ -118,7 +120,8 @@ private fun computeStreak(sortedDates: Set<String>): Int {
 @Composable
 private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
     Box(
-        modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(16.dp),
+        modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(16.dp)
+            .clickable(actionStartActivity<MainActivity>()),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -146,7 +149,8 @@ private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
 private fun MediumWidgetContent(streak: Int, visitDates: Set<String>, context: Context) {
     val bitmap = WidgetBitmapRenderer.render(context = context, visitDates = visitDates, weeks = 12)
     Row(
-        modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(12.dp),
+        modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(12.dp)
+            .clickable(actionStartActivity<MainActivity>()),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
