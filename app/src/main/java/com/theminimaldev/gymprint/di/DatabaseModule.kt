@@ -19,7 +19,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
-        Room.databaseBuilder(context, AppDatabase::class.java, "punchcard.db")
+        Room.databaseBuilder(context, AppDatabase::class.java, "gymprint.db")
             .fallbackToDestructiveMigration()
             .build()
 

@@ -10,10 +10,10 @@ import com.theminimaldev.gymprint.data.datastore.DataStoreManager
 import com.theminimaldev.gymprint.data.repository.GymRepository
 import com.theminimaldev.gymprint.widget.WidgetRefreshWorker
 import dagger.hilt.android.AndroidEntryPoint
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -22,14 +22,16 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
     @Inject lateinit var dataStoreManager: DataStoreManager
     @Inject lateinit var gymRepository: GymRepository
 
-    // 8 hours in milliseconds — stale ENTER threshold
-    private val staleThresholdMs = 8 * 60 * 60 * 1000L
+    companion object {
+        private const val TAG = "GeofenceReceiver"
+        // Discard an ENTER event if the session has been open longer than this
+        private const val STALE_ENTRY_THRESHOLD_MS = 8 * 60 * 60 * 1000L
+    }
 
     override fun onReceive(context: Context, intent: Intent) {
         val geofencingEvent = GeofencingEvent.fromIntent(intent) ?: return
         if (geofencingEvent.hasError()) {
-            val errorMessage = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)
-            android.util.Log.e("GeofenceReceiver", "Geofence error: $errorMessage")
+            Log.e(TAG, "Geofence error: ${GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)}")
             return
         }
 
@@ -42,7 +44,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                     val savedEntry = dataStoreManager.getEntryTimestampMs()
                     val now = System.currentTimeMillis()
                     // If there's a stale entry older than 8 hours, discard it
-                    if (savedEntry > 0 && (now - savedEntry) >= staleThresholdMs) {
+                    if (savedEntry > 0 && (now - savedEntry) >= STALE_ENTRY_THRESHOLD_MS) {
                         dataStoreManager.clearEntryTimestamp()
                     }
                     // Only save a new entry if no current one is active

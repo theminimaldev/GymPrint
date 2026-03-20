@@ -84,7 +84,7 @@ private data class WidgetData(
 )
 
 private suspend fun loadWidgetData(context: Context): WidgetData {
-    val db = androidx.room.Room.databaseBuilder(context, AppDatabase::class.java, "punchcard.db")
+    val db = androidx.room.Room.databaseBuilder(context, AppDatabase::class.java, "gymprint.db")
         .fallbackToDestructiveMigration().build()
     val visits = db.gymVisitDao().observeAll().first()
     db.close()

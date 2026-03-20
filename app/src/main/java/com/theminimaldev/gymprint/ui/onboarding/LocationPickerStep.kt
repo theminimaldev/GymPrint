@@ -69,15 +69,11 @@ fun LocationPickerStep(
             val request = FindAutocompletePredictionsRequest.builder()
                 .setQuery(searchQuery)
                 .build()
-            Log.d(TAG, "Searching: $searchQuery")
             predictions = suspendCancellableCoroutine { cont ->
                 client.findAutocompletePredictions(request)
-                    .addOnSuccessListener {
-                        Log.d(TAG, "Got ${it.autocompletePredictions.size} results")
-                        cont.resume(it.autocompletePredictions)
-                    }
+                    .addOnSuccessListener { cont.resume(it.autocompletePredictions) }
                     .addOnFailureListener {
-                        Log.e(TAG, "Search failed", it)
+                        Log.e(TAG, "Autocomplete failed", it)
                         cont.resumeWithException(it)
                     }
             }
@@ -236,7 +232,10 @@ fun LocationPickerStep(
                                         val place = suspendCancellableCoroutine<Place> { cont ->
                                             client.fetchPlace(req)
                                                 .addOnSuccessListener { cont.resume(it.place) }
-                                                .addOnFailureListener { cont.resumeWithException(it) }
+                                                .addOnFailureListener {
+                                                    Log.e(TAG, "FetchPlace failed", it)
+                                                    cont.resumeWithException(it)
+                                                }
                                         }
                                         val latLng = place.location ?: return@launch
                                         val name = place.displayName
