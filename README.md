@@ -2,6 +2,15 @@
 
 Automatic gym visit tracker for Android. Set your gym's location once — Gymprint uses geofencing to detect when you visit and logs it automatically. No manual check-ins.
 
+## Screenshots
+
+<p float="left">
+  <img src="screenshots/visit_chart.png" width="200" />
+  <img src="screenshots/add_gym_search.png" width="200" />
+  <img src="screenshots/add_gym_manual.png" width="200" />
+  <img src="screenshots/widgets.png" width="200" />
+</p>
+
 ## Features
 
 - **Automatic tracking** — geofence-based detection, no manual logging needed
