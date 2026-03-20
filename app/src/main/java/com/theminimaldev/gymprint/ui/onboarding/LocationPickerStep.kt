@@ -137,7 +137,7 @@ fun LocationPickerStep(
                 searched = false
                 errorMessage = null
             },
-            placeholder = { Text("e.g. Woohoo Gym, Mumbai") },
+            placeholder = { Text("e.g. Woohoo, Bangalore") },
             leadingIcon = {
                 if (isSearching)
                     CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
