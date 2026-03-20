@@ -2,10 +2,12 @@ package com.theminimaldev.gymprint.widget
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.toArgb
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
@@ -52,6 +54,17 @@ private fun widgetColors(context: Context) =
         ColorProviders(light = LightColorScheme, dark = DarkColorScheme)
     }
 
+private fun graphColors(context: Context): Pair<Int, Int> {
+    val isNight = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+            Configuration.UI_MODE_NIGHT_YES
+    val scheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (isNight) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+    } else {
+        if (isNight) DarkColorScheme else LightColorScheme
+    }
+    return scheme.primary.toArgb() to scheme.surfaceVariant.toArgb()
+}
+
 private fun launchIntent(context: Context) =
     Intent(context, MainActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -85,9 +98,16 @@ class GymWidgetMedium : GlanceAppWidget() {
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val data = loadWidgetData(context)
         val colors = widgetColors(context)
+        val (filledColor, emptyColor) = graphColors(context)
         provideContent {
             GlanceTheme(colors = colors) {
-                MediumWidgetContent(streak = data.streak, visitDates = data.visitDates, context = context)
+                MediumWidgetContent(
+                    streak = data.streak,
+                    visitDates = data.visitDates,
+                    context = context,
+                    filledColor = filledColor,
+                    emptyColor = emptyColor
+                )
             }
         }
     }
@@ -169,9 +189,21 @@ private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
 }
 
 @Composable
-private fun MediumWidgetContent(streak: Int, visitDates: Set<String>, context: Context) {
+private fun MediumWidgetContent(
+    streak: Int,
+    visitDates: Set<String>,
+    context: Context,
+    filledColor: Int,
+    emptyColor: Int
+) {
     val glanceContext = LocalContext.current
-    val bitmap = WidgetBitmapRenderer.render(context = context, visitDates = visitDates, weeks = 12)
+    val bitmap = WidgetBitmapRenderer.render(
+        context = context,
+        visitDates = visitDates,
+        weeks = 12,
+        filledColor = filledColor,
+        emptyColor = emptyColor
+    )
     Row(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(12.dp)
             .clickable(actionStartActivity(launchIntent(glanceContext))),
