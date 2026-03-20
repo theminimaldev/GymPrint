@@ -45,6 +45,18 @@
             </intent-filter>
         </activity>
 
+        <!-- Required when using on-demand WorkManager initialization via Configuration.Provider -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+
         <!-- Geofence broadcast receiver -->
         <receiver
             android:name=".geofence.GeofenceBroadcastReceiver"
