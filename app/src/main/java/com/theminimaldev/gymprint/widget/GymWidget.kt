@@ -1,12 +1,14 @@
 package com.theminimaldev.gymprint.widget
 
 import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.Composable
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
@@ -116,9 +118,10 @@ private fun computeStreak(sortedDates: Set<String>): Int {
 
 @Composable
 private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
+    val context = LocalContext.current
     Box(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(16.dp)
-            .clickable(actionStartActivity<MainActivity>()),
+            .clickable(actionStartActivity(Intent(context, MainActivity::class.java))),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -144,10 +147,11 @@ private fun SmallWidgetContent(streak: Int, lastVisitDate: String) {
 
 @Composable
 private fun MediumWidgetContent(streak: Int, visitDates: Set<String>, context: Context) {
+    val glanceContext = LocalContext.current
     val bitmap = WidgetBitmapRenderer.render(context = context, visitDates = visitDates, weeks = 12)
     Row(
         modifier = GlanceModifier.fillMaxSize().background(GlanceTheme.colors.surface).padding(12.dp)
-            .clickable(actionStartActivity<MainActivity>()),
+            .clickable(actionStartActivity(Intent(glanceContext, MainActivity::class.java))),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
