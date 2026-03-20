@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Gymprint</string>
+    <string name="widget_small_description">Shows your current streak and last visit</string>
+    <string name="widget_medium_description">Shows contribution graph and streak</string>
+</resources>
