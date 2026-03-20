@@ -5,48 +5,61 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  release:
+    name: Build & Publish Release
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: gradle
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build release APK
-        run: ./gradlew assembleRelease
-        # No MAPS_API_KEY set — build uses manual lat/lng entry only
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > ${{ github.workspace }}/release.keystore
 
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        id: sign
+      - name: Build release APK
+        # No MAPS_API_KEY — release build uses manual coordinate entry only
         env:
-          BUILD_TOOLS_VERSION: "34.0.0"
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
+          KEYSTORE_PATH: ${{ github.workspace }}/release.keystore
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Get tag name
+        id: tag
+        run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Rename APK
-        run: mv "${{ steps.sign.outputs.signedReleaseFile }}" gymprint-${{ github.ref_name }}.apk
+        run: mv app/build/outputs/apk/release/app-release.apk app/build/outputs/apk/release/gymprint-${{ steps.tag.outputs.TAG }}.apk
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: gymprint-${{ github.ref_name }}.apk
+          name: Gymprint ${{ steps.tag.outputs.TAG }}
+          tag_name: ${{ steps.tag.outputs.TAG }}
+          draft: false
+          prerelease: false
           generate_release_notes: true
           body: |
             ## Installation
             Download the APK below and install it on your Android device (API 26+).
 
             > **Note:** This build uses **manual coordinate entry** for gym setup. If you want the search-based gym picker, you'll need to [build the app yourself](../../#with-a-google-places-api-key-optional) with your own Google Places API key.
+          files: app/build/outputs/apk/release/gymprint-${{ steps.tag.outputs.TAG }}.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
