@@ -11,6 +11,10 @@ Automatic gym visit tracker for Android. Set your gym's location once — Gympri
   <img src="screenshots/widgets.png" width="200" />
 </p>
 
+## Download
+
+Grab the latest APK from the [Releases](../../releases/latest) page. No API key included — uses manual coordinate entry by default.
+
 ## Features
 
 - **Automatic tracking** — geofence-based detection, no manual logging needed
@@ -55,6 +59,17 @@ cd gymprint
 Requires Android 8.0+ (API 26). No root or special setup needed.
 
 The APK will be at `app/build/outputs/apk/debug/app-debug.apk`.
+
+### Release builds (CI)
+
+Releases are built automatically on GitHub Actions when a tag is pushed:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+The workflow signs the APK using secrets stored in the repository (`SIGNING_KEY`, `KEY_ALIAS`, `KEY_STORE_PASSWORD`, `KEY_PASSWORD`) and publishes it to GitHub Releases.
 
 ## Tech Stack
 
